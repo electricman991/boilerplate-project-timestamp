@@ -27,13 +27,19 @@ app.get("/api/hello", function (req, res) {
 app.get("/api/:date?", (req, res) => {
   const date = req.params.date
 
-  let inputDate = new Date(date)
+  let inputDate
   if (!date) {
-    inputDate = new Date()
-    res.json({unix: date.getTime(), utc: inputDate.toUTCString()})
+    inputDate = new Date();
+    res.json({unix: inputDate.getTime(), utc: inputDate.toUTCString()})
+  } else {
+    inputDate = isNaN(date) ? new Date(date) : new Date(parseInt(date));
   }
+  // if (!date) {
+  //   inputDate = new Date()
+  //   res.json({unix: date.getTime(), utc: inputDate.toUTCString()})
+  // }
 
-  else if (isNaN(inputDate.getTime())) {
+  if (isNaN(inputDate.getTime())) {
     res.json({error: "Invalid date"})
   }
   
